@@ -1,0 +1,6 @@
+EbookLib
+requests
+gTTS
+beautifulsoup4
+google-generativeai
+python-dotenv
