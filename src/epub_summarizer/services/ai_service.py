@@ -1,25 +1,19 @@
-import os
 import google.generativeai as genai
-from dotenv import load_dotenv
+from .. import config
 
 def summarize_text(text):
-    load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        print("錯誤：找不到 API Key")
+    if not config.GEMINI_API_KEY:
+        print("錯誤：找不到 API Key，請檢查 .env 文件")
         return None
 
     try:
-        genai.configure(api_key=api_key)
-        
-        # 使用您环境中可用的、正确的免费模型 gemini-flash-latest
-        model = genai.GenerativeModel('gemini-flash-latest')
+        genai.configure(api_key=config.GEMINI_API_KEY)
+        model = genai.GenerativeModel(config.GEMINI_MODEL_NAME)
 
         # 限制處理的文本長度
-        max_chunk_size = 15000
-        text_to_summarize = text[:max_chunk_size]
+        text_to_summarize = text[:config.MAX_TEXT_CHUNK_SIZE]
 
-        print("正在使用 Gemini (gemini-flash-latest) 生成摘要...")
+        print(f"正在使用 Gemini ({config.GEMINI_MODEL_NAME}) 生成摘要...")
         response = model.generate_content(
             f"請為以下內容提供簡潔的書評摘要：\n\n{text_to_summarize}"
         )

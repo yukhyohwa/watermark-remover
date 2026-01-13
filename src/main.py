@@ -1,8 +1,8 @@
 import os
 import sys
-from book_reader import read_book
-from summarizer import summarize_text
-from audio_converter import text_to_speech
+from epub_summarizer.core.reader import read_book
+from epub_summarizer.services.ai_service import summarize_text
+from epub_summarizer.core.converter import text_to_speech
 
 def main():
     """Main function to orchestrate the ebook to audio summary process."""

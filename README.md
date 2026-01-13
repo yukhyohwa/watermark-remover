@@ -46,7 +46,7 @@
 Run the script by providing the path to your EPUB file:
 
 ```bash
-python main.py "path/to/your/book.epub"
+python src/main.py "data/books/your_book.epub"
 ```
 
 ### Output
@@ -58,12 +58,21 @@ The script generates results in the `output/` directory:
 
 ```text
 epub-audio-summarizer/
-├── main.py             # Entry point / 主程序
-├── book_reader.py      # EPUB content extraction
-├── summarizer.py       # AI processing using Gemini API
-├── audio_converter.py  # Audio generation (gTTS)
-├── .env.example        # Environment variable template
-├── requirements.txt    # Project dependencies
+├── data/                  # Storage for input files
+│   └── books/             # EPUB books to process
+├── src/                   # Source code
+│   ├── main.py            # Entry point / 主程序
+│   └── epub_summarizer/   # Core Package
+│       ├── core/          # Parsing and logic
+│       │   ├── reader.py     # EPUB extraction
+│       │   └── converter.py  # Audio generation
+│       ├── services/      # AI services
+│       │   └── ai_service.py # Gemini API processing
+│       └── config.py      # Configuration and Constants
+├── output/                # Generated summaries and audio
+├── .env                   # API keys (Local)
+├── .env.example
+├── requirements.txt
 └── README.md
 ```
 
