@@ -7,7 +7,7 @@ from epub_summarizer.core.converter import text_to_speech
 def main():
     """Main function to orchestrate the ebook to audio summary process."""
     if len(sys.argv) != 2:
-        print("Usage: python main.py <path_to_ebook>")
+        print("Usage: python src/main.py <path_to_ebook>")
         sys.exit(1)
 
     file_path = sys.argv[1]
