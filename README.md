@@ -6,7 +6,7 @@
 
 **Epub Audio Summarizer** is a Python tool designed to convert EPUB books into concise audio summaries. It leverages the **Google Gemini API** for intelligent summarization and **gTTS (Google Text-to-Speech)** to generate audio files, making it easier to consume book content on the go.
 
-## Features / 功能
+## Features
 
 1.  **Smart EPUB Parsing**: Extracts textual content effectively from EPUB files.
 2.  **AI Summarization**: Uses **Google Gemini** (`gemini-flash` model) to generate high-quality summaries.
@@ -14,7 +14,7 @@
     *   *Default Language*: Chinese (Traditional/Taiwan) - `zh-tw`.
 4.  **Dual Output**: Saves both the text summary (`.txt`) and audio (`.mp3`) for offline access.
 
-## Requirements / 依赖
+## Requirements
 
 *   Python 3.x
 *   Google Gemini API Key
@@ -22,7 +22,7 @@
 *   `ebooklib`
 *   `beautifulsoup4`
 
-## Installation / 安装
+## Installation
 
 1.  **Clone the repository**:
     ```bash
@@ -41,7 +41,7 @@
     GEMINI_API_KEY=your_api_key_here
     ```
 
-## Usage / 使用方法
+## Usage
 
 Run the script by providing the path to your EPUB file:
 
@@ -54,14 +54,14 @@ The script generates results in the `output/` directory:
 *   `[book_name].txt`: The text summary.
 *   `[book_name].mp3`: The audio summary.
 
-## Project Structure / 项目结构
+## Project Structure
 
 ```text
 epub-audio-summarizer/
 ├── data/                  # Storage for input files
 │   └── books/             # EPUB books to process
 ├── src/                   # Source code
-│   ├── main.py            # Entry point / 主程序
+│   ├── main.py            # Entry point
 │   └── epub_summarizer/   # Core Package
 │       ├── core/          # Parsing and logic
 │       │   ├── reader.py     # EPUB extraction
