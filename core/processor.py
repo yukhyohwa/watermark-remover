@@ -1,16 +1,7 @@
 import cv2
 import numpy as np
 import os
-import argparse
 import logging
-from pathlib import Path
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - [%(levelname)s] - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
 
 class WatermarkProcessor:
     """
@@ -96,7 +87,6 @@ class WatermarkProcessor:
         cv2.line(freq_viz, (0, h//2), (w, h//2), (100,), 1, cv2.LINE_AA)
         
         # 3. Spatial Domain Analysis using Laplacian Edge Enhancement
-        # This helps visualize subtle LSB (Least Significant Bit) or direct spatial overlays
         laplacian = cv2.Laplacian(gray, cv2.CV_64F, ksize=3)
         lap_viz = cv2.normalize(np.abs(laplacian), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         lap_viz = cv2.equalizeHist(lap_viz) # Enhance contrast to make faint spatial noises pop
@@ -107,42 +97,3 @@ class WatermarkProcessor:
         # Save output map
         self._save_image(combined, output_path, quality=95)
         logging.info("Visualization analysis completed successfully.")
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Blind Watermark Analysis and Removal Tool",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    parser.add_argument("-i", "--input", required=True, help="Path to input image")
-    parser.add_argument("-o", "--output", required=True, help="Path to save processed image")
-    parser.add_argument("--mode", choices=['remove', 'extract'], default='remove', 
-                        help="'remove' to destroy watermark, 'extract' to visualize it")
-    
-    # Removal Specific Args
-    removal_group = parser.add_argument_group('Removal Options')
-    removal_group.add_argument("-b", "--blur", type=int, default=3, help="Gaussian blur radius (odd number)")
-    removal_group.add_argument("-q", "--quality", type=int, default=85, help="JPEG compression quality (1-100)")
-    removal_group.add_argument("-r", "--resize", type=float, default=0.99, help="Micro-resampling factor")
-
-    args = parser.parse_args()
-
-    try:
-        processor = WatermarkProcessor(args.input)
-        
-        if args.mode == 'remove':
-            processor.remove_watermark(
-                output_path=args.output,
-                blur_radius=args.blur,
-                resize_factor=args.resize,
-                jpeg_quality=args.quality
-            )
-        elif args.mode == 'extract':
-            processor.extract_and_visualize(output_path=args.output)
-            
-    except Exception as e:
-        logging.error(f"Process failed: {e}")
-
-
-if __name__ == "__main__":
-    main()

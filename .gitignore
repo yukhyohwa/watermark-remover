@@ -21,12 +21,18 @@ venv.bak/
 *.swp
 *.swo
 
-# Project specific ignores (prevent committing test images)
+# Project specific ignores
+# Ignore all images so we don't accidentally commit sensitive screenshots with watermarks
 *.jpg
 *.jpeg
 *.png
 *.bmp
 *.tiff
 *.webp
+
+# Except test assets if you eventually make a test folder
+!tests/assets/*.jpg
+
+# Ignore generated output directories
+input/
 output/
-test_images/
