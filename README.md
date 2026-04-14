@@ -1,33 +1,33 @@
 # Frequency Domain Watermark Analyzer & Remover
 
-一个用于检测、分析并物理抹除隐写“盲水印”的桌面端开源安全分析工具。它通过组合物理维度的图形变换策略，从底层破坏基于空域点阵和频域（FFT/DCT）的数字溯源信息。
+An open-source desktop utility for detecting, analyzing, and physically eradicating hidden "blind watermarks". It uses a combination of dimensional graphic transformations to destroy digital tracking signals embedded in spatial grids and frequency domains (FFT/DCT).
 
-## 目录结构说明
+## Directory Structure
 
 ```text
 watermark-remover/
 ├── core/
 │   ├── __init__.py
-│   └── processor.py      # 核心水印处理类 (WatermarkProcessor)
-├── input/                # 推荐放置待处理原图的地方 (.gitignore 已排除)
-├── output/               # 推荐放置输出图片的地方 (.gitignore 已排除)
-├── main.py               # CLI 命令行入口执行点
+│   └── processor.py      # Core watermark processing logic (WatermarkProcessor)
+├── input/                # Recommended folder for input images (ignored by .gitignore)
+├── output/               # Recommended folder for output images (ignored by .gitignore)
+├── main.py               # CLI entry point
 ├── requirements.txt
 └── README.md
 ```
 
-## 核心功能
+## Core Features
 
-* **提取与检测 (`extract` 模式)**：计算图像的傅里叶变换频谱 (FFT Spectrum) 结合拉普拉斯滤波空间域扫描，将隐藏在人眼不可见的高频信号或 LSB 微小噪声可视化。
-* **物理抹除 (`remove` 模式)**：对载体执行 **高斯频段截断** -> **微重采样点阵破坏** -> **DCT 特征定型**，实现不可逆的物理级脱敏。
+* **Extract & Detect (`extract` mode)**: Calculates the Fast Fourier Transform (FFT) spectrum combined with a Laplacian filter in the spatial domain to visualize invisible high-frequency signals or LSB noises.
+* **Physical Eradication (`remove` mode)**: Applies **Gaussian frequency truncation** -> **Micro-resampling grid disruption** -> **DCT characteristic formatting** to achieve irreversible, physical-level sanitization against watermarks.
 
-## 环境依赖
+## Requirements
 
 * Python 3.7+
 * OpenCV
 * NumPy
 
-## 快速安装
+## Quick Start
 
 ```bash
 git clone https://github.com/yukhyohwa/watermark-remover.git
@@ -35,37 +35,37 @@ cd watermark-remover
 pip install -r requirements.txt
 ```
 
-## 使用方法
+## Usage
 
-脚本的入口已变更为项目根目录下的 `main.py`。
+The entry point for the script is `main.py` located in the root directory.
 
-### 1. 扫描与探测水印 (`--mode extract`)
-当你怀疑一张截图带有平台暗水印时，运行提取命令：
+### 1. Scan & Detect Watermarks (`--mode extract`)
+When you suspect a screenshot contains a hidden watermark, run the extraction command:
 ```bash
 python main.py --mode extract -i "input/screenshot.png" -o "output/analysis.jpg"
 ```
-*输出的 `analysis.jpg` 是一张 1:3 的对比长图（原始灰度图 | 频域 FFT 频谱热力图 | 空域拉普拉斯锐化图）。如果 FFT 频谱中出现了非自然的对称高亮亮斑，说明图片 100% 存在频域水印。*
+*This command outputs a 1:3 comparison image (`analysis.jpg`) containing: Original Grayscale | Frequency Domain FFT Spectrum Heatmap | Spatial Domain Laplacian Sharpening. If unnatural symmetric bright spots appear in the FFT spectrum, it is 100% certain that a frequency-domain watermark exists in the image.*
 
-### 2. 清洗与脱敏 (`--mode remove`)
-使用默认强度清理暗水印（最大限度兼顾原始阅读画质）：
+### 2. Clean & Sanitize (`--mode remove`)
+Clean the hidden watermark using default settings (maximizes preservation of original readability):
 ```bash
 python main.py --mode remove -i "input/screenshot.png" -o "output/clean.jpg"
 ```
 
-**高级清洗参数：**
-如果你追求彻底的安全性，可以通过调大参数以过滤极具鲁棒性的新型水印：
+**Advanced Cleaning Parameters:**
+If you require absolute security and want to bypass highly robust modern watermarks (sacrificing some image quality):
 ```bash
 python main.py --mode remove -i "input/screenshot.png" -o "output/ultra_clean.jpg" -b 5 -q 70 -r 0.98
 ```
 
-### CLI 参数全查阅
+### Full CLI Parameters
 
-* `-i`, `--input`: 输入图片路径。
-* `-o`, `--output`: 输出图片路径。
-* `--mode`: 运行模式。`remove` (抹除) 或 `extract` (探测分析)。默认: `remove`。
-* `-b`, `--blur`: [仅remove模式] 高斯模糊内核尺寸。必须为奇数，默认 3。
-* `-q`, `--quality`: [仅remove模式] 最终 JPEG 有损压缩率 (1-100)，默认 85。
-* `-r`, `--resize`: [仅remove模式] 抗晶格对齐位移比。默认 0.99。
+* `-i`, `--input`: Path to the input image. (Required)
+* `-o`, `--output`: Path to save the processed output image. (Required)
+* `--mode`: Execution mode. `remove` (sanitize) or `extract` (detection analysis). Default: `remove`.
+* `-b`, `--blur`: [Removal Mode Only] Gaussian blur kernel size. Must be an odd number. Default: `3`.
+* `-q`, `--quality`: [Removal Mode Only] Final JPEG lossy compression quality (1-100). Default: `85`.
+* `-r`, `--resize`: [Removal Mode Only] Micro-resampling factor to disrupt grid alignments. Default: `0.99`.
 
-## 注意事项
-本项目的研究旨在加强开发者对于信息隐藏技术的学术理解。由于新型水印技术发展迅速（如对抗生成网络级隐藏），本工具并不能对安全级别极高的司法级追踪溯源提供绝对匿名保证，机密信息的最高安全操作仍是光学屏摄重建。
+## Disclaimer
+This project is intended solely for academic research and to enhance developers' understanding of information-hiding technologies. Due to the rapid advancement of modern watermark techniques (e.g., GAN-based hiding), this tool cannot provide absolute anonymity guarantees against judicial-level tracking systems with ultra-high robustness. For top-tier security of sensitive information, physical optical screen recording (taking a photo of the screen) remains the recommended approach.
